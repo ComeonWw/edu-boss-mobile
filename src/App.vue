@@ -1,11 +1,7 @@
 <template>
   <div id="app">
     <!-- 根路由出口 -->
-    <!-- <router-view/> -->
-    <div>
-      <van-button>按钮</van-button>
-      <div class="box">实例元素</div>
-    </div>
+    <router-view/>
   </div>
 </template>
 

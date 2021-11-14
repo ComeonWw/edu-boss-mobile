@@ -6,14 +6,20 @@
         <img :src="item.img">
       </van-swipe-item>
     </van-swipe>
+    <!-- 底部课程列表 -->
+    <course-content-list></course-content-list>
   </div>
 </template>
 
 <script>
 import { getAllAds } from '@/services/course'
+import CourseContentList from './CourseContentList.vue'
 
 export default {
   name: 'CourseContent',
+  components: {
+    CourseContentList
+  },
   data () {
     return {
       // 轮播图案列表
@@ -33,6 +39,7 @@ export default {
     }
   },
   computed: {
+    // 通过计算属性，筛选上架状态的广告
     activeAdList () {
       return this.adList.filter(item => item.status === 1)
     }
@@ -51,5 +58,9 @@ export default {
   overflow: hidden;
   display: flex;
   justify-content: center;
+}
+.course-content-list {
+  top: 220px;
+  bottom: 50px;
 }
 </style>

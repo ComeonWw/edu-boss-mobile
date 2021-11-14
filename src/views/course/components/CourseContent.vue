@@ -7,13 +7,15 @@
       </van-swipe-item>
     </van-swipe>
     <!-- 底部课程列表 -->
-    <course-content-list></course-content-list>
+    <course-content-list
+      :fetch-data="fetchData"
+    ></course-content-list>
   </div>
 </template>
 
 <script>
-import { getAllAds } from '@/services/course'
-import CourseContentList from './CourseContentList.vue'
+import { getAllAds, getQueryCourses } from '@/services/course'
+import CourseContentList from '@/components/CourseContentList.vue'
 
 export default {
   name: 'CourseContent',
@@ -27,9 +29,15 @@ export default {
     }
   },
   created () {
+    // 请求轮播图图片信息
     this.loadAds()
+    // 将接口设置给fetchData
+    this.fetchData = getQueryCourses
   },
   methods: {
+    // fetchData (options) {
+    //   return getQueryCourses(options)
+    // },
     async loadAds () {
       const { data } = await getAllAds({
         spaceKeys: '999'

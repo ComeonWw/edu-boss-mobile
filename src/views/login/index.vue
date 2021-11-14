@@ -73,6 +73,9 @@ export default {
       if (data.state === 1) {
         // 登录成功后将数据保存到本地存储中
         this.$store.commit('setUser', data.content)
+        // login登录成功的跳转取决于redirect
+        // 跳转
+        this.$router.push(this.$route.query.redirect || '/')
         // 提示
         this.$toast('登陆成功！')
       } else {

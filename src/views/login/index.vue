@@ -69,9 +69,10 @@ export default {
     async onSubmit () {
       this.isLoading = true
       const { data } = await login(this.form)
-      console.log(data)
       // 登录成功
       if (data.state === 1) {
+        // 登录成功后将数据保存到本地存储中
+        this.$store.commit('setUser', data.content)
         // 提示
         this.$toast('登陆成功！')
       } else {

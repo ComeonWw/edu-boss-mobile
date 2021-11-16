@@ -17,12 +17,18 @@
           :key="item.id"
         >
           <div>
-            <img :src="item.courseImgUrl" alt="">
+            <!-- 所有课程与已购课程的图片数据属性名不同，检测后使用 -->
+            <img :src="item.courseImgUrl || item.image" alt="">
           </div>
           <div class="course-info">
-            <h3 v-text="item.courseName"></h3>
+            <!-- 名称检测 -->
+            <h3 v-text="item.courseName || item.name"></h3>
             <p class="course-preview" v-html="item.previewFirstField"></p>
-            <p class="price-container">
+            <!-- 如果为已购课程，无需显示价格区域 -->
+            <p
+              v-if="item.price"
+              class="price-container"
+            >
               <span class="course-discounts">￥{{item.discounts}}</span>
               <s class="course-price">￥{{item.price}}</s>
             </p>
@@ -34,9 +40,16 @@
 </template>
 
 <script>
-import { getQueryCourses } from '@/services/course'
+// import { getQueryCourses } from '@/services/course'
 export default {
   name: 'CourseContentList',
+  props: {
+    // 用于请求数据的函数
+    fetchData: {
+      type: Function,
+      required: true
+    }
+  },
   data () {
     return {
       // 数据列表
@@ -54,7 +67,7 @@ export default {
   methods: {
     async onLoad () {
       // 发送请求，请求上架课程信息
-      const { data } = await getQueryCourses({
+      const { data } = await this.fetchData({
         currentPage: this.currentPage,
         pageSize: 10,
         status: 1
@@ -62,6 +75,8 @@ export default {
       // 检测，如果没有数据了，结束，如果有，保存
       if (data.data && data.data.records && data.data.records.length !== 0) {
         this.list.push(...data.data.records)
+      } else if (data.content && data.content.length !== 0) {
+        this.list.push(...data.content)
       }
       // 下次请求下一页
       this.currentPage++
@@ -69,7 +84,9 @@ export default {
       this.loading = false
 
       // 数据全部加载完成
-      if (data.data.records.length < 10) {
+      if (data.data && data.data.records && data.data.records.length < 10) {
+        this.finished = true
+      } else if (data.content && data.content.length < 10) {
         this.finished = true
       }
     },
@@ -77,7 +94,7 @@ export default {
       // 还原数据页数为1
       this.currentPage = 1
       // 重新请求数据
-      const { data } = await getQueryCourses({
+      const { data } = await this.fetchData({
         currentPage: this.currentPage,
         pageSize: 10,
         status: 1
@@ -85,6 +102,8 @@ export default {
       // 如果数据存在，清空并保存新数据，否则结束
       if (data.data && data.data.records && data.data.records.length !== 0) {
         this.list = data.data.records
+      } else if (data.content && data.content.length !== 0) {
+        this.list = data.content
       }
       // 提示
       this.$toast('刷新成功')
@@ -141,7 +160,9 @@ export default {
   margin-right: 10px;
 }
 
-p h3 {
+// 并集选择器
+p, h3 {
   margin: 0;
+  // padding: 0;
 }
 </style>

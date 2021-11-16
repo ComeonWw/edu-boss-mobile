@@ -18,10 +18,10 @@ export const getQueryCourses = data => {
   })
 }
 
-// // 获取已购课程
-// export const getPurchaseCourse = () => {
-//   return request({
-//     method: 'GET',
-//     url: '/front/course/getPurchaseCourse'
-//   })
-// }
+// 获取已购课程
+export const getPurchaseCourse = () => {
+  return request({
+    method: 'GET',
+    url: '/front/course/getPurchaseCourse'
+  })
+}

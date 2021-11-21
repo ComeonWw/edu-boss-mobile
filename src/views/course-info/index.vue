@@ -1,6 +1,7 @@
 <template>
   <div class="course-info">
-    <van-cell-group>
+    <!-- 如果是已购课程，去除底部支付区域并设置主题内容区域占满屏幕 -->
+    <van-cell-group :style="styleOptions">
       <!-- 课程图片 -->
       <van-cell class="course-img">
         <img :src="course.courseImgUrl" alt="">
@@ -39,6 +40,15 @@
         </van-tabs>
       </van-cell>
     </van-cell-group>
+    <!-- 底部支付功能 -->
+    <van-tabbar v-if="!course.isBuy">
+      <div class="price">
+        <span v-text="course.discountsTag"></span>
+        <span class="discounts">￥{{ course.discounts }}</span>
+        <span>￥{{ course.price }}</span>
+      </div>
+      <van-button type="primary">立即购买</van-button>
+    </van-tabbar>
   </div>
 </template>
 
@@ -63,7 +73,9 @@ export default {
       // 课程信息
       course: {},
       // 课程章节信息
-      sections: {}
+      sections: {},
+      // 样式信息
+      styleOptions: {}
     }
   },
   created () {
@@ -82,6 +94,9 @@ export default {
         courseId: this.courseId
       })
       this.course = data.content
+      if (data.content.isBuy) {
+        this.styleOptions.bottom = 0
+      }
       console.log(data)
     }
   }
@@ -115,7 +130,7 @@ export default {
   margin: 0;
 }
 
-.course-price .discounts {
+.discounts {
   color: #ff7452;
   font-size: 24px;
   font-weight: 700;
@@ -130,5 +145,39 @@ export default {
   font-weight: 700;
   color: #666;
   margin-left: 10px;
+}
+
+// 添加底部导航后设置
+.van-cell-group {
+  position: fixed;
+  // 预留底部⽀付区域⾼度
+  width: 100%;
+  top: 0;
+  bottom: 50px;
+  overflow-y: auto;
+}
+
+// 调整内部⽂字位置
+.van-tabbar {
+  line-height: 50px;
+  // 设置 padding 后元素超出窗⼝
+  padding: 0 20px;
+  // 设置 box-sizing
+  box-sizing: border-box;
+  display: flex;
+  // 内部元素左右显示
+  justify-content: space-between;
+  // 内容居中
+  align-items: center;
+}
+
+span {
+  font-size: 14px;
+}
+
+// 尺寸调整
+.van-button {
+  width: 50%;
+  height: 80%;
 }
 </style>

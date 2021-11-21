@@ -7,6 +7,7 @@
       v-for="item in sectionData.courseLessons"
       :key="item.id"
       class="lesson"
+      @click="handleClick(item)"
     >
       <!-- 课时标题 -->
       <span v-text="item.theme"></span>
@@ -25,6 +26,19 @@ export default {
     sectionData: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    // 点击课时时，如果可播放，则跳转视频⻚，并传递课时 ID。
+    handleClick (lessonInfo) {
+      if (lessonInfo.canPlay) {
+        this.$router.push({
+          name: 'lesson-video',
+          params: {
+            lessonId: lessonInfo.id
+          }
+        })
+      }
     }
   }
 }

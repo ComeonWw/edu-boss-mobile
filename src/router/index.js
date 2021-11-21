@@ -37,6 +37,13 @@ const routes = [
     name: 'course-info',
     component: () => import(/* webpackChunkName: 'course-info' */'@/views/course-info/index'),
     props: true
+  },
+  // 视频页
+  {
+    path: '/lesson-video/:lessonId',
+    name: 'lesson-video',
+    component: () => import(/* webpackChunkName: 'lesson-video' */'@/views/course-info/video'),
+    props: true
   }
 ]
 

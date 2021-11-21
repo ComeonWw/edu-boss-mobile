@@ -44,6 +44,14 @@ const routes = [
     name: 'lesson-video',
     component: () => import(/* webpackChunkName: 'lesson-video' */'@/views/course-info/video'),
     props: true
+  },
+  // 支付页面
+  {
+    path: '/pay/:lessonId',
+    name: 'pay',
+    component: () => import(/* webpackChunkName: 'pay' */'@/views/pay/index'),
+    meta: { requiresAuth: true },
+    props: true
   }
 ]
 

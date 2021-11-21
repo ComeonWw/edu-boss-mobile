@@ -47,7 +47,10 @@
         <span class="discounts">￥{{ course.discounts }}</span>
         <span>￥{{ course.price }}</span>
       </div>
-      <van-button type="primary">立即购买</van-button>
+      <van-button
+        type="primary"
+        @click="handlePay"
+      >立即购买</van-button>
     </van-tabbar>
   </div>
 </template>
@@ -98,6 +101,26 @@ export default {
         this.styleOptions.bottom = 0
       }
       console.log(data)
+    },
+    handlePay () {
+      // 检测是否登录
+      if (this.$store.state.user) {
+        // 如果已登录，跳转支付页
+        this.$router.push({
+          name: 'pay',
+          params: {
+            courseId: this.courseId
+          }
+        })
+      } else {
+        // 如果未登录，跳转登陆页面， 并记录本页面信息，登录成功后跳回到当前页
+        this.$router.push({
+          name: 'login',
+          query: {
+            redirect: this.$route.fullPath
+          }
+        })
+      }
     }
   }
 }

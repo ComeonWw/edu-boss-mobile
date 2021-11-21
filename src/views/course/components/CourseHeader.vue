@@ -12,7 +12,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .course-header {
   height: 50px;
   display: flex;

@@ -34,3 +34,12 @@ export const getCourseById = (params) => {
     params
   })
 }
+
+// 获取章节与课时
+export const getSectionAndLesson = params => {
+  return request({
+    method: 'GET',
+    url: '/front/course/session/getSectionAndLesson',
+    params
+  })
+}

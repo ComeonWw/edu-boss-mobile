@@ -120,7 +120,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 // 设置固定定位，解决列表滚动，导航和轮播也跟着滚动的问题。
 .course-content-list {
   position: fixed;

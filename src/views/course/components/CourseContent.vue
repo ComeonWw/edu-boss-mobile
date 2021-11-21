@@ -55,7 +55,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .my-swipe {
   width: 100%;
 }

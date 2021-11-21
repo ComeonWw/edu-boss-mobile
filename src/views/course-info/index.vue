@@ -22,16 +22,36 @@
         </div>
       </van-cell>
       <!-- 课程详细内容 -->
-      <van-cell class="course-detail"></van-cell>
+      <van-cell class="course-detail">
+        <!-- 选项卡 -->
+        <van-tabs sticky scrollspy>
+          <van-tab title="详情">
+            <!-- 详情在后台是通过富文本编辑器设置的，内容为html文本，所以要通过v-html进行解析 -->
+            <div v-html="course.courseDescription"></div>
+          </van-tab>
+          <van-tab title="内容">
+            <course-section
+              v-for="item in sections"
+              :key="item.id"
+              :section-data="item"
+            />
+          </van-tab>
+        </van-tabs>
+      </van-cell>
     </van-cell-group>
   </div>
 </template>
 
 <script>
-import { getCourseById } from '@/services/course'
+import { getCourseById, getSectionAndLesson } from '@/services/course'
+import CourseSection from './components/CourseSection.vue'
 
 export default {
   name: 'CourseInfo',
+  components: {
+    CourseSection
+  },
+  // 接收课程id
   props: {
     courseId: {
       type: [String, Number],
@@ -41,13 +61,22 @@ export default {
   data () {
     return {
       // 课程信息
-      course: {}
+      course: {},
+      // 课程章节信息
+      sections: {}
     }
   },
   created () {
     this.loadCourse()
+    this.loadSections()
   },
   methods: {
+    async loadSections () {
+      const { data } = await getSectionAndLesson({
+        courseId: this.courseId
+      })
+      this.sections = data.content.courseSectionList
+    },
     async loadCourse () {
       const { data } = await getCourseById({
         courseId: this.courseId
